@@ -1,0 +1,5 @@
+# Flores Utah — https://www.floresutah.com
+User-agent: *
+Allow: /
+
+Sitemap: https://www.floresutah.com/sitemap.xml
