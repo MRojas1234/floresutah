@@ -482,7 +482,7 @@ html{ scroll-behavior:smooth; scroll-padding-top:80px }
 }
 .pieza:hover{ transform:translateY(-3px); box-shadow:var(--sombra-alta) }
 .pieza img{ width:100%; aspect-ratio:4/5; object-fit:cover; display:block }
-.pieza figcaption{ padding:12px; margin-top:auto }
+.pieza figcaption{ padding:12px }
 .pieza .btn{
   width:100%; min-height:44px; padding:.55em 1em; font-size:.9rem;
   box-shadow:none;
@@ -500,3 +500,45 @@ html{ scroll-behavior:smooth; scroll-padding-top:80px }
   box-shadow:var(--sombra);
 }
 .otras a:hover{ border-color:var(--malva-claro); color:var(--rosa) }
+
+/* ---------------------------------------------------------------
+   Tarjeta de arreglo con nombre y precio  (noviembre 2026)
+   El precio es lo primero que busca la gente: va grande y arriba,
+   antes que la descripcion.
+   --------------------------------------------------------------- */
+.pieza figcaption{ display:flex; flex-direction:column; gap:4px; flex:1 }
+
+.pieza__nombre{
+  font-family:"DM Serif Display",Georgia,serif;
+  font-size:1.02rem; line-height:1.25; font-weight:400;
+  margin:0; color:var(--tinta);
+}
+.pieza__precio{
+  margin:0; font-weight:700; font-size:1.12rem; color:var(--malva);
+  letter-spacing:-.01em;
+}
+.pieza__precio span{
+  font-weight:600; font-size:.74rem; color:var(--tinta-suave);
+  letter-spacing:.02em;
+}
+.pieza__medidas{
+  margin:0; font-size:.8rem; line-height:1.45; color:var(--tinta-suave);
+}
+.pieza__medidas span{ white-space:nowrap }
+.pieza__detalle{
+  margin:0; font-size:.82rem; line-height:1.45; color:var(--tinta-suave);
+}
+.pieza__nota{
+  margin:0; font-size:.76rem; line-height:1.4; color:var(--dorado);
+  font-weight:600;
+}
+.pieza .btn{ margin-top:auto; padding-top:10px }
+
+/* Aviso de disponibilidad, textual de su catalogo */
+.aviso{
+  max-width:62ch; margin:26px auto 0; padding:12px 18px;
+  background:var(--fondo-tibio); border:1px solid var(--linea);
+  border-radius:var(--radio);
+  font-size:.84rem; line-height:1.55; color:var(--tinta-suave);
+  text-align:center;
+}
