@@ -681,24 +681,31 @@
   })();
 
   /* Al llegar con una seccion en la direccion (floresutah.com/#fechas, o el menu
-     desde una pagina de categoria), Chrome intenta el salto mientras la pagina
-     todavia se acomoda y lo cancela, por culpa de scroll-behavior:smooth.
-     Resultado: la direccion decia #fechas pero el visitante se quedaba arriba.
-     Aqui se repite el salto ya cargada la pagina, de golpe y no animado. */
+     desde una pagina de categoria), el salto se queda a medias: la direccion dice
+     #contacto pero el visitante se queda hasta arriba. Pasa por scroll-behavior:smooth,
+     que convierte ese salto en una animacion que el navegador cancela mientras carga.
+     Aqui se vuelve a apuntar varias veces durante el primer segundo, sin animacion,
+     hasta que la seccion queda en su sitio. En cuanto aterriza, deja de intentar. */
   (function () {
-    function irASeccion() {
+    var INTENTOS = [0, 60, 150, 320, 600, 1000];
+    function apuntar() {
       var id = location.hash.slice(1);
-      if (!id) return;
+      if (!id) return true;
       var destino = document.getElementById(id);
-      if (!destino) return;
-      if (Math.abs(destino.getBoundingClientRect().top - 80) < 4) return;
+      if (!destino) return true;
+      if (Math.abs(destino.getBoundingClientRect().top - 80) < 4) return true;  // ya llego
       var antes = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = 'auto';
       destino.scrollIntoView();
       document.documentElement.style.scrollBehavior = antes;
+      return false;
     }
-    if (document.readyState === 'complete') irASeccion();
-    else window.addEventListener('load', irASeccion);
+    function insistir() {
+      if (!location.hash) return;
+      INTENTOS.forEach(function (ms) { setTimeout(apuntar, ms); });
+    }
+    if (document.readyState === 'complete') insistir();
+    else window.addEventListener('load', insistir);
   })();
 </script>
 </body>
