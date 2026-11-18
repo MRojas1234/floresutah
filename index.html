@@ -679,6 +679,27 @@
     if (document.readyState === 'complete') empezar();
     else window.addEventListener('load', empezar);
   })();
+
+  /* Al llegar con una seccion en la direccion (floresutah.com/#fechas, o el menu
+     desde una pagina de categoria), Chrome intenta el salto mientras la pagina
+     todavia se acomoda y lo cancela, por culpa de scroll-behavior:smooth.
+     Resultado: la direccion decia #fechas pero el visitante se quedaba arriba.
+     Aqui se repite el salto ya cargada la pagina, de golpe y no animado. */
+  (function () {
+    function irASeccion() {
+      var id = location.hash.slice(1);
+      if (!id) return;
+      var destino = document.getElementById(id);
+      if (!destino) return;
+      if (Math.abs(destino.getBoundingClientRect().top - 80) < 4) return;
+      var antes = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      destino.scrollIntoView();
+      document.documentElement.style.scrollBehavior = antes;
+    }
+    if (document.readyState === 'complete') irASeccion();
+    else window.addEventListener('load', irASeccion);
+  })();
 </script>
 </body>
 </html>
