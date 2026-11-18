@@ -27,7 +27,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="img/hero-ramo.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="img/pase/pase-01.jpg" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Mulish:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="css/estilo.css">
 
@@ -147,7 +147,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="env hero__caja">
-      <div>
+      <div class="hero__texto">
         <h1>Más que flores, creamos <em>momentos inolvidables</em></h1>
         <p class="hero__bajada">
           Florería en <strong>West Valley City, Utah</strong>. Dinos qué quieres expresar
@@ -162,19 +162,42 @@
           </a>
         </div>
         <p class="hero__nota">Te contestamos por WhatsApp. Sin formularios, sin cuentas, sin esperas.</p>
-        <ul class="fichas">
-          <li class="fichas--google">★★★★★ <b>5,0</b> · 40 reseñas en Google</li>
-          <li>🛵 Entrega express en <b>3 horas</b></li>
-          <li>💐 Arreglos <b>personalizados</b></li>
-          <li>💳 Tarjeta, Zelle, CashApp</li>
-        </ul>
       </div>
       <figure class="hero__foto">
-        <img src="img/hero-ramo.jpg" width="480" height="600"
-             alt="Ramo de gerberas, lilis y rosas en papel rosa, hecho a mano en Flores Utah, West Valley City."
-             fetchpriority="high" decoding="async">
+        <div class="pase" data-pase>
+          <img class="pase__foto es-visible" src="img/pase/pase-01.jpg" width="800" height="1000"
+               alt="Una abuela abraza a su nieta junto al arreglo floral que acaba de recibir, de Flores Utah." fetchpriority="high" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-02.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-03.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-04.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-05.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-06.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-07.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-08.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-09.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-10.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-11.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+          <img class="pase__foto" data-src="img/pase/pase-12.jpg" width="800" height="1000"
+               alt="" aria-hidden="true" decoding="async">
+        </div>
         <figcaption>Hecho en West Valley City</figcaption>
       </figure>
+      <ul class="fichas">
+        <li class="fichas--google">★★★★★ <b>5,0</b> · 40 reseñas en Google</li>
+        <li>🛵 Entrega express en <b>3 horas</b></li>
+        <li>💐 Arreglos <b>personalizados</b></li>
+        <li>💳 Tarjeta, Zelle, CashApp</li>
+      </ul>
     </div>
   </section>
 
@@ -212,12 +235,12 @@
         </article>
 
         <article class="cat">
-          <img src="img/cat/boda-04.jpg" width="700" height="875" loading="lazy" decoding="async"
-               alt="Ramo de novia en cascada con rosas rosas y blancas, de Flores Utah.">
+          <img src="img/cat/boda-01.jpg" width="700" height="875" loading="lazy" decoding="async"
+               alt="Novia con su ramo de rosas blancas y tulipanes, hecho por Flores Utah.">
           <div class="cat__cuerpo">
             <h3>Bodas y XV años</h3>
             <p>El día que no se repite. Diseñamos contigo los arreglos y la decoración floral de tu evento. 🤍</p>
-            <a class="cat__pedir" href="flores-para-bodas-y-xv/">Ver los 4 arreglos</a>
+            <a class="cat__pedir" href="flores-para-bodas-y-xv/">Ver los 10 arreglos</a>
           </div>
         </article>
 
@@ -599,6 +622,63 @@
       cajaMapa.replaceChildren(marco);
     });
   }
+
+  /* ---- Pase de fotos de la portada -------------------------------------
+     Arranca solo en cuanto la pagina abre. Reglas:
+       - la primera foto ya viene en el HTML y se ve de inmediato;
+       - las demas se descargan DESPUES, para no retrasar la apertura;
+       - si la persona pidio menos movimiento en su telefono, no se anima;
+       - si la pestana no se esta viendo, se detiene (no gasta datos ni bateria). */
+  (function () {
+    var caja = document.querySelector('[data-pase]');
+    if (!caja) return;
+    var fotos = Array.prototype.slice.call(caja.querySelectorAll('.pase__foto'));
+    if (fotos.length < 2) return;
+
+    var quieto = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (quieto) return;
+
+    var PAUSA = 4500;
+    var actual = 0, reloj = null;
+
+    var puntos = document.createElement('div');
+    puntos.className = 'pase__puntos';
+    puntos.setAttribute('aria-hidden', 'true');
+    fotos.forEach(function (_, i) {
+      var d = document.createElement('span');
+      d.className = 'pase__punto' + (i === 0 ? ' es-visible' : '');
+      puntos.appendChild(d);
+    });
+    caja.appendChild(puntos);
+    var bolitas = Array.prototype.slice.call(puntos.children);
+
+    function cargar(i) {
+      var f = fotos[i];
+      if (f && !f.src && f.dataset.src) f.src = f.dataset.src;
+    }
+
+    function mostrar(i) {
+      fotos[actual].classList.remove('es-visible');
+      bolitas[actual].classList.remove('es-visible');
+      actual = i;
+      fotos[actual].classList.add('es-visible');
+      bolitas[actual].classList.add('es-visible');
+      cargar((actual + 1) % fotos.length);   // la siguiente, lista de antemano
+    }
+
+    function andar() { if (!reloj) reloj = setInterval(function () {
+      mostrar((actual + 1) % fotos.length);
+    }, PAUSA); }
+    function parar() { clearInterval(reloj); reloj = null; }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) parar(); else andar();
+    });
+
+    function empezar() { cargar(1); andar(); }
+    if (document.readyState === 'complete') empezar();
+    else window.addEventListener('load', empezar);
+  })();
 </script>
 </body>
 </html>

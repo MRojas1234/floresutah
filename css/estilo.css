@@ -166,7 +166,7 @@ p{ margin:0 0 1em; text-wrap:pretty }
 
 /* fichas de confianza */
 .fichas{
-  list-style:none; margin:22px 0 0; padding:0;
+  list-style:none; margin:0; padding:0;
   display:flex; flex-wrap:wrap; gap:8px;
 }
 .fichas li{
@@ -190,10 +190,17 @@ p{ margin:0 0 1em; text-wrap:pretty }
 
 @media (min-width:860px){
   .hero{ padding-block:56px 76px }
-  .hero__caja{ grid-template-columns:1.05fr .95fr; align-items:center; gap:54px }
+  .hero__caja{
+    grid-template-columns:1.05fr .95fr;
+    grid-template-areas:"texto foto" "fichas foto";
+    grid-template-rows:auto auto;
+    align-items:start; gap:22px 54px;
+  }
+  .hero__texto{ grid-area:texto }
+  .fichas{ grid-area:fichas }
+  .hero__foto{ grid-area:foto; align-self:center }
   .hero__acciones{ grid-template-columns:auto auto; justify-items:stretch }
   .hero__acciones .btn{ width:auto }
-  .hero__foto{ order:2 }
   .hero__foto img{ margin-left:auto; max-width:440px }
 }
 
@@ -541,4 +548,47 @@ html{ scroll-behavior:smooth; scroll-padding-top:80px }
   border-radius:var(--radio);
   font-size:.84rem; line-height:1.55; color:var(--tinta-suave);
   text-align:center;
+}
+
+/* ---------------------------------------------------------------
+   Pase de fotos de la portada  (noviembre 2026)
+   Gente recibiendo sus flores, para que la foto diga lo mismo que
+   el titulo: "creamos momentos inolvidables".
+   La primera foto se queda fija si el navegador no anima.
+   --------------------------------------------------------------- */
+.pase{
+  position:relative; aspect-ratio:4/5; width:100%;
+  border-radius:var(--radio); overflow:hidden;
+  box-shadow:var(--sombra-alta);
+  background:var(--fondo-tibio);
+}
+.pase__foto{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .9s ease-in-out;
+  border-radius:0; box-shadow:none; max-width:none;
+}
+.pase__foto.es-visible{ opacity:1 }
+
+/* Puntitos: para que se note que hay mas de una foto */
+.pase__puntos{
+  position:absolute; left:0; right:0; bottom:12px;
+  display:flex; justify-content:center; gap:6px;
+  pointer-events:none;
+}
+.pase__punto{
+  width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,.55);
+  box-shadow:0 1px 3px rgba(0,0,0,.35);
+  transition:background .4s ease, width .4s ease;
+}
+.pase__punto.es-visible{ background:#fff; width:18px; border-radius:999px }
+
+@media (min-width:860px){
+  .hero__foto .pase{ margin-left:auto; max-width:440px }
+}
+
+/* Si la persona pidio menos movimiento, no se anima: se queda la primera */
+@media (prefers-reduced-motion: reduce){
+  .pase__foto{ transition:none }
 }
